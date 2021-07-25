@@ -17,7 +17,7 @@
 
 - `mlagents-learn --help`
 
-### Start learnung
+### Start learning
 - `mlagents-learn --force`
 - `mlagents-learn --run-id=Test2`
 - `mlagents-learn config/config.yml --force --env=Build/Snake.exe --time-scale=1 --quality-level=0 --width=512 --height=512 --num-envs=10`
