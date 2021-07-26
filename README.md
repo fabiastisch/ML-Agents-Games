@@ -26,3 +26,6 @@
 - `tensorboard --logdir results`
 - View Tensorboard on `localhost:6006`
 
+
+### TODO's
+- make chrome Dino game 
