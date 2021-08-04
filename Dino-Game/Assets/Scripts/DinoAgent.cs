@@ -46,7 +46,7 @@ public class DinoAgent : Agent {
     
     private void OnTriggerEnter2D(Collider2D other) {
         //Debug.Log("DIno On Trigger");
-        AddReward(-10000);
+        //AddReward(-10000);
         AddReward(_gameManager.counter.getCounts());
         EndEpisode();
     }
