@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Dino : MonoBehaviour {
     [SerializeField] private float jumpForce; // 700 at Gravity Scale 2
+    [SerializeField] private GameManager _gameManager;
     private Rigidbody2D _rb;
     private BoxCollider2D _collider2D;
     [SerializeField] private bool canJump = true;
@@ -27,7 +28,7 @@ public class Dino : MonoBehaviour {
     private void CheckJump() {
         var colliders = new List<Collider2D>();
         if (_collider2D.GetContacts(colliders) >= 1 && colliders[0].CompareTag("Ground")) {
-                canJump = true;
+            canJump = true;
         }
         else {
             canJump = false;
@@ -41,5 +42,6 @@ public class Dino : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("DIno On Trigger");
+        _gameManager.ResetGame();
     }
 }
