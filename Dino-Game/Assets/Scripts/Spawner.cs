@@ -15,7 +15,7 @@ public class Spawner : MonoBehaviour {
     }
 
     void SpawnOstacles() {
-        Instantiate(this.obstacle, transform.localPosition, Quaternion.identity);
+        Instantiate(this.obstacle, transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame

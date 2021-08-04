@@ -14,28 +14,19 @@ public class Dino : MonoBehaviour {
     private Vector2 _velocity;
     public bool _isGrounded;
     [SerializeField] private GameObject _ground;
+    private Ground _groundScript;
 
     // Start is called before the first frame update
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
         _collider2D = GetComponent<BoxCollider2D>();
+        _groundScript = _ground.GetComponent<Ground>();
+        _groundScript.OnEnterGround += () => _isGrounded = true;
+        _groundScript.OnExitGround += () => _isGrounded = false;
     }
 
     // Update is called once per frame
     void Update() {
-        var circleCastAll = Physics2D.CircleCastAll(_ground.transform.position, 0.5f, Vector2.down, 0f);
-        var found = false;
-        for (var i = 0; i < circleCastAll.Length; i++) {
-            if (circleCastAll[i].transform.CompareTag("Ground")) {
-                _isGrounded = true;
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            _isGrounded = false;
-        }
-        
 
         //  var overlapCircle = Physics2D.OverlapCircleAll(_ground.transform.position, 10, LayerMask.NameToLayer("Ground"));
         //Debug.Log(Physics2D.OverlapCircle(transform.position, 10f, 8));

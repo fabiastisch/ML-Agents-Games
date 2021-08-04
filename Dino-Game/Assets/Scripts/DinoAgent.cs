@@ -11,7 +11,7 @@ public class DinoAgent : Agent {
     void Start() {
         _dino = GetComponent<Dino>();
     }
-    
+
     public override void OnEpisodeBegin() {
         _gameManager.ResetGame();
     }
@@ -19,7 +19,7 @@ public class DinoAgent : Agent {
     public override void Heuristic(in ActionBuffers actionsOut) {
         Debug.Log("Heuristic");
         ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
-        if ( Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow)) {
+        if (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.UpArrow)) {
             discreteActions[0] = 1;
         }
     }
@@ -43,18 +43,20 @@ public class DinoAgent : Agent {
 
         //AddReward(-0.1f);
     }
-    
+
     private void OnTriggerEnter2D(Collider2D other) {
         //Debug.Log("DIno On Trigger");
         //AddReward(-10000);
-        AddReward(_gameManager.counter.getCounts());
-        EndEpisode();
+        if (!other.CompareTag("Ground")) {
+            AddReward(_gameManager.counter.getCounts());
+            EndEpisode();
+        }
     }
 
     // Update is called once per frame
     void Update() {
-        //if (_dino.canJump) {
-            
-        //}
+        if (_dino._isGrounded) {
+            RequestDecision();
+        }
     }
 }

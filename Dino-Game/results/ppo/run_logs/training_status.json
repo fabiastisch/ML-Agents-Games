@@ -2,22 +2,31 @@
     "Dino": {
         "checkpoints": [
             {
-                "steps": 36340,
-                "file_path": "results\\ppo\\Dino\\Dino-36340.onnx",
-                "reward": 29.77777777777778,
-                "creation_time": 1628088913.6276383,
+                "steps": 499998,
+                "file_path": "results\\ppo\\Dino\\Dino-499998.onnx",
+                "reward": 25.975932611311674,
+                "creation_time": 1628109606.7676022,
                 "auxillary_file_paths": [
-                    "results\\ppo\\Dino\\Dino-36340.pt"
+                    "results\\ppo\\Dino\\Dino-499998.pt"
+                ]
+            },
+            {
+                "steps": 500068,
+                "file_path": "results\\ppo\\Dino\\Dino-500068.onnx",
+                "reward": 25.976218787158146,
+                "creation_time": 1628109606.8295417,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Dino\\Dino-500068.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 36340,
+            "steps": 500068,
             "file_path": "results\\ppo\\Dino.onnx",
-            "reward": 29.77777777777778,
-            "creation_time": 1628088913.6276383,
+            "reward": 25.976218787158146,
+            "creation_time": 1628109606.8295417,
             "auxillary_file_paths": [
-                "results\\ppo\\Dino\\Dino-36340.pt"
+                "results\\ppo\\Dino\\Dino-500068.pt"
             ]
         }
     },
