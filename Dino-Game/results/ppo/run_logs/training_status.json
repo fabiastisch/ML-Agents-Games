@@ -1,0 +1,29 @@
+{
+    "Dino": {
+        "checkpoints": [
+            {
+                "steps": 9691,
+                "file_path": "results\\ppo\\Dino\\Dino-9691.onnx",
+                "reward": -9990.01030927835,
+                "creation_time": 1628087718.8731434,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Dino\\Dino-9691.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 9691,
+            "file_path": "results\\ppo\\Dino.onnx",
+            "reward": -9990.01030927835,
+            "creation_time": 1628087718.8731434,
+            "auxillary_file_paths": [
+                "results\\ppo\\Dino\\Dino-9691.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.27.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

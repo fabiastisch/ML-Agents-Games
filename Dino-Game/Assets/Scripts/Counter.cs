@@ -19,4 +19,7 @@ public class Counter : MonoBehaviour {
         counter = 0;
     }
 
+    public float getCounts() {
+        return counter;
+    }
 }

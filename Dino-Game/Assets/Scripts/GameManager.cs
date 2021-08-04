@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-    [SerializeField] private Counter counter;
+    [SerializeField] public Counter counter;
 
     public void ResetGame() {
         counter.ResetCounter();
