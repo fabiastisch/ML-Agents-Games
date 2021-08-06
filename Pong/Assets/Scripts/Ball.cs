@@ -11,9 +11,7 @@ public class Ball : MonoBehaviour {
     // Start is called before the first frame update
     void Start() { 
         _rb = GetComponent<Rigidbody2D>();
-        float x = Random.Range(-1,1) == 0 ? 1 : -1;
-        float y = Random.Range(-0.5f, 0.5f);
-        _rb.velocity = getScalesSpeedVector2(new Vector2(x, y));
+        ResetBall();
     }
     
     private Vector2 getScalesSpeedVector2(Vector2 vector)
@@ -25,6 +23,29 @@ public class Ball : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+    }
+
+    private void FixedUpdate() {
+        _rb.velocity = getScalesSpeedVector2(_rb.velocity);
+    }
+    
+    
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.CompareTag("LeftGoal")) {
+            
+        }else if (other.CompareTag("RightGoal")) {
+            
+        }
+
+        ResetBall();
+    }
+
+    private void ResetBall() {
+        transform.localPosition = new Vector3(0, 0, 0);
+        float x = Random.Range(-1,1) == 0 ? 1 : -1;
+        float y = Random.Range(-0.5f, 0.5f);
+        _rb.velocity = getScalesSpeedVector2(new Vector2(x, y));
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
