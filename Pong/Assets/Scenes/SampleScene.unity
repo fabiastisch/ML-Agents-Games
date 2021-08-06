@@ -585,8 +585,16 @@ PrefabInstance:
       value: Paddle (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6815644927964667164, guid: 241a4a3eaf6d0d547a32717c41207954, type: 3}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 1415357800}
+    - target: {fileID: 6815644927964667164, guid: 241a4a3eaf6d0d547a32717c41207954, type: 3}
       propertyPath: isPlayer1
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6815644927964667164, guid: 241a4a3eaf6d0d547a32717c41207954, type: 3}
+      propertyPath: isLeftPaddle
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6815644927964667167, guid: 241a4a3eaf6d0d547a32717c41207954, type: 3}
       propertyPath: m_RootOrder
@@ -958,6 +966,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Paddle
       objectReference: {fileID: 0}
+    - target: {fileID: 6815644927964667164, guid: 241a4a3eaf6d0d547a32717c41207954, type: 3}
+      propertyPath: ball
+      value: 
+      objectReference: {fileID: 1415357800}
     - target: {fileID: 6815644927964667167, guid: 241a4a3eaf6d0d547a32717c41207954, type: 3}
       propertyPath: m_RootOrder
       value: 1

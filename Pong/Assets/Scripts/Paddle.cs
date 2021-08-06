@@ -7,12 +7,17 @@ public class Paddle : MonoBehaviour {
     private Rigidbody2D _rb;
     [SerializeField] float _speedMultiplier = 50f;
 
+    public Ball ball;
+
     private float _movement;
+
+    [SerializeField] private bool isLeftPaddle;
 
     // Start is called before the first frame update
     void Start() {
         _rb = this.GetComponent<Rigidbody2D>();
     }
+
 
     // Update is called once per frame
     void Update() {

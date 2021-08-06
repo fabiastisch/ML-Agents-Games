@@ -1,12 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour {
     private Rigidbody2D _rb;
     [SerializeField] private float speed;
+
+    public event Action OnLeftGoal;
+    public event Action OnRightGoal;
+    
 
     // Start is called before the first frame update
     void Start() { 
@@ -33,9 +35,9 @@ public class Ball : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other) {
         if (other.CompareTag("LeftGoal")) {
-            
+            OnLeftGoal?.Invoke();
         }else if (other.CompareTag("RightGoal")) {
-            
+             OnRightGoal?.Invoke();
         }
 
         ResetBall();
