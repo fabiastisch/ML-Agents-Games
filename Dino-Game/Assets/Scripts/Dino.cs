@@ -5,41 +5,53 @@ using UnityEngine;
 
 public class Dino : MonoBehaviour {
     [SerializeField] private float jumpForce; // 700 at Gravity Scale 2
+    [SerializeField] private GameManager _gameManager;
     private Rigidbody2D _rb;
     private BoxCollider2D _collider2D;
-    [SerializeField] private bool canJump = true;
+    [SerializeField] private float _gravity = -20f;
+    [SerializeField] private float _jumpHeight = 5f;
+
+    private Vector2 _velocity;
+    public bool _isGrounded;
+    [SerializeField] private GameObject _ground;
+    private Ground _groundScript;
 
     // Start is called before the first frame update
     void Start() {
         _rb = GetComponent<Rigidbody2D>();
         _collider2D = GetComponent<BoxCollider2D>();
+        _groundScript = _ground.GetComponent<Ground>();
+        _groundScript.OnEnterGround += () => _isGrounded = true;
+        _groundScript.OnExitGround += () => _isGrounded = false;
     }
 
     // Update is called once per frame
     void Update() {
-        CheckJump();
 
-        if (canJump && Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) {
-            Jump();
-        }
-    }
+        //  var overlapCircle = Physics2D.OverlapCircleAll(_ground.transform.position, 10, LayerMask.NameToLayer("Ground"));
+        //Debug.Log(Physics2D.OverlapCircle(transform.position, 10f, 8));
 
-    private void CheckJump() {
-        var colliders = new List<Collider2D>();
-        if (_collider2D.GetContacts(colliders) >= 1 && colliders[0].CompareTag("Ground")) {
-                canJump = true;
+        if (_isGrounded && _velocity.y < 0) {
+            _velocity.y = -2f;
         }
-        else {
-            canJump = false;
+        //CheckJump();
+
+        if (_isGrounded && Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            //Jump();
         }
+
+        _velocity.y += _gravity * Time.deltaTime; // Movement Y Direction (Jump & Gravity)
+        _rb.velocity = _velocity;
     }
 
     public void Jump() {
-        canJump = false;
-        _rb.AddForce(Vector2.up * jumpForce);
+        if (!_isGrounded) {
+            return;
+        }
+        _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("DIno On Trigger");
+        //_gameManager.ResetGame();
     }
 }

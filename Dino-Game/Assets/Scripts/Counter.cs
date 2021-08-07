@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Counter : MonoBehaviour {
@@ -11,11 +8,18 @@ public class Counter : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         _text = GetComponent<Text>();
-        InvokeRepeating(nameof(UpdateCounter), 0,0.1f);
+        InvokeRepeating(nameof(UpdateText), 0,0.1f);
     }
 
-    void UpdateCounter() {
+    void UpdateText() {
         _text.text = (++counter).ToString();
     }
 
+    public void ResetCounter() {
+        counter = 0;
+    }
+
+    public float getCounts() {
+        return counter;
+    }
 }
