@@ -22,12 +22,14 @@ public class PaddleAgent : Agent {
         }
         else {
             AddReward(-1);
+            EndEpisode();
         }
     }
 
     private void BallOnOnLeftGoal() {
         if (isLeftPaddle) {
             AddReward(-1);
+            EndEpisode();
         }
         else {
             AddReward(1);

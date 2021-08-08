@@ -24,6 +24,16 @@ public class Ball : MonoBehaviour {
     private Vector2 getScalesSpeedVector2(Vector2 vector) {
         float vectorLength = vector.magnitude;
         float multi = speed / vectorLength;
+        if (vector.x == 0) {
+            vector.x = (float) (0.1 * vector.y);
+            return getScalesSpeedVector2(vector);
+        }
+
+        if (vector.y == 0) {
+            vector.y = (float) (0.1 * vector.x);
+            return getScalesSpeedVector2(vector);
+        }
+
         return vector * multi;
     }
 
@@ -63,7 +73,7 @@ public class Ball : MonoBehaviour {
         transform.localPosition = new Vector3(0, 0, 0);
         float x = Random.Range(-1, 1) == 0 ? 1 : -1;
         float y = Random.Range(-0.5f, 0.5f);
-        _rb.velocity = getScalesSpeedVector2(new Vector2(x, 0));
+        _rb.velocity = getScalesSpeedVector2(new Vector2(x, y));
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
@@ -71,7 +81,7 @@ public class Ball : MonoBehaviour {
             float maxDist = other.transform.localScale.y * 1f * 0.5f + transform.localScale.y * 1f * 0.5f;
             float dist = transform.localPosition.y - other.transform.localPosition.y;
             float nDist = dist / maxDist;
-            var temp = new Vector2(-_velocity.normalized.x, nDist );
+            var temp = new Vector2(-_velocity.normalized.x, nDist);
             _rb.velocity = getScalesSpeedVector2(temp);
         }
         else if (other.gameObject.CompareTag("Wall")) {
