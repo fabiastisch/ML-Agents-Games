@@ -13,4 +13,9 @@ public class Utils {
     public static Vector3 getDistanceVector3(GameObject g1, GameObject g2) {
         return g1.transform.position - g2.transform.position;
     }
+
+    public static bool IsNearZero(float x) {
+        float small = 1E-2f;
+        return (x < small && x > -small);
+    }
 }

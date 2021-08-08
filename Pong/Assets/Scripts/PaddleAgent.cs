@@ -52,7 +52,7 @@ public class PaddleAgent : Agent {
     }
 
     public override void OnActionReceived(ActionBuffers actions) {
-        Debug.Log("OnActionReceived: " + actions.ContinuousActions[0]);
+        //Debug.Log("OnActionReceived: " + actions.ContinuousActions[0]);
         _paddle.Move(actions.ContinuousActions[0]);
     }
 }

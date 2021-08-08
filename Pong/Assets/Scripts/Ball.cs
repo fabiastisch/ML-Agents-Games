@@ -22,19 +22,15 @@ public class Ball : MonoBehaviour {
     }
 
     private Vector2 getScalesSpeedVector2(Vector2 vector) {
-        float vectorLength = vector.magnitude;
-        float multi = speed / vectorLength;
-        if (vector.x == 0) {
-            vector.x = (float) (0.1 * vector.y);
-            return getScalesSpeedVector2(vector);
-        }
+        var normalized = vector.normalized;
 
-        if (vector.y == 0) {
-            vector.y = (float) (0.1 * vector.x);
-            return getScalesSpeedVector2(vector);
-        }
+        normalized.x = Utils.IsNearZero(normalized.x) ? 0.1f : normalized.x;
+        normalized.y = Utils.IsNearZero(normalized.y) ? 0.1f : normalized.y;
 
-        return vector * multi;
+        //float vectorLength = vector.magnitude;
+        //float multi = speed / vectorLength;
+
+        return normalized.normalized * speed;
     }
 
     // Update is called once per frame
@@ -44,6 +40,7 @@ public class Ball : MonoBehaviour {
     private void FixedUpdate() {
         _rb.velocity = getScalesSpeedVector2(_rb.velocity);
         _velocity = _rb.velocity;
+        Debug.Log("FixedUpdate: normalized Velocity: " + _rb.velocity.normalized);
         CheckBallOutside();
     }
 
@@ -58,7 +55,7 @@ public class Ball : MonoBehaviour {
 
 
     private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("OnTriggerEnter2D: " + other.gameObject);
+        //Debug.Log("OnTriggerEnter2D: " + other.gameObject);
         if (other.CompareTag("LeftGoal")) {
             OnLeftGoal?.Invoke();
             ResetBall();
@@ -88,11 +85,11 @@ public class Ball : MonoBehaviour {
             // var dir = transform.position - other.transform.position;
             // _rb.velocity = getScalesSpeedVector2(dir);
             var velocity = _velocity;
-            Debug.Log(_velocity);
+            //Debug.Log(_velocity);
             velocity = getScalesSpeedVector2(new Vector2(velocity.x, -velocity.y));
             _rb.velocity = velocity;
         }
 
-        Debug.Log("OnCollisionEnter2D" + other.gameObject);
+        //Debug.Log("OnCollisionEnter2D" + other.gameObject);
     }
 }

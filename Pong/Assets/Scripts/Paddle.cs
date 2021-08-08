@@ -40,6 +40,6 @@ public class Paddle : MonoBehaviour {
             _rb.velocity = Vector2.zero;
         }
 
-        Debug.Log("PADDLE: OnTriggerEnter2D: " + other.gameObject);
+        //Debug.Log("PADDLE: OnTriggerEnter2D: " + other.gameObject);
     }
 }
