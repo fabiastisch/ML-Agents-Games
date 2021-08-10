@@ -3,9 +3,12 @@ using UnityEngine;
 
 namespace Tetris.Scripts {
     public class Block : MonoBehaviour {
+        
         private Rigidbody _rb;
 
         [SerializeField] private Vector3 rotatePosition;
+        [SerializeField] private bool hasOnly2Rotations = false;
+        private bool _isRotated = false;
 
         // Start is called before the first frame update
         void Start() {
@@ -18,9 +21,18 @@ namespace Tetris.Scripts {
         }
 
         public void Rotate() {
-            transform.RotateAround(transform.TransformPoint(rotatePosition), Vector3.forward, -90);
+            if (hasOnly2Rotations) {
+                RotateInternal(_isRotated ? 90 : -90);
+                _isRotated = !_isRotated;
+                return;
+            }
+            RotateInternal(90);
+        }
+
+        private void RotateInternal(float angle) {
+            transform.RotateAround(transform.TransformPoint(rotatePosition), Vector3.forward, -angle);
             if (!IsValidMove(Vector3.zero)) {
-                transform.RotateAround(transform.TransformPoint(rotatePosition), Vector3.forward, 90);
+                transform.RotateAround(transform.TransformPoint(rotatePosition), Vector3.forward, angle);
             }
         }
 
