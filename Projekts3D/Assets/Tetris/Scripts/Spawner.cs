@@ -23,5 +23,9 @@ namespace Tetris.Scripts {
             GameObject spawned = Instantiate(blocks[Utils.GetRandomInt(blocks.Count - 1)], transform.position, Quaternion.identity);
             spawnedBlock = spawned;
         }
+
+        public GameObject GetCurrentBlock() {
+            return spawnedBlock;
+        }
     }
 }
