@@ -11,10 +11,26 @@ namespace Tetris.Scripts {
 
         public override void OnEpisodeBegin() {
             tetrisLogic.ResetGame();
+            spawner.SpawnNext();
         }
 
         private void Start() {
-            spawner.OnSpawnedBlock += block => _currentBlock = block;
+            spawner.OnSpawnedBlock += SpawnerOnOnSpawnedBlock;
+            spawner.OnGameOver += SpawnerOnOnGameOver;
+            tetrisLogic.OnCompleteRow += TetrisLogicOnOnCompleteRow;
+        }
+
+        private void SpawnerOnOnSpawnedBlock(Block block) {
+            _currentBlock = block;
+            AddReward(0.1f);
+        }
+
+        private void TetrisLogicOnOnCompleteRow() {
+            AddReward(2);
+        }
+
+        private void SpawnerOnOnGameOver() {
+            EndEpisode();
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
@@ -35,7 +51,13 @@ namespace Tetris.Scripts {
         }
 
         public override void CollectObservations(VectorSensor sensor) {
-            // 5 observations
+            // Block Position, Typ and Rotation
+            sensor.AddObservation(_currentBlock.transform.position.x);
+            sensor.AddObservation(_currentBlock.transform.position.y);
+            sensor.AddObservation((int) _currentBlock.type);
+            sensor.AddObservation(_currentBlock.rotation);
+            // Filled Grid
+            sensor.AddObservation(tetrisLogic.GetBlocks());
         }
 
         public override void OnActionReceived(ActionBuffers actions) {

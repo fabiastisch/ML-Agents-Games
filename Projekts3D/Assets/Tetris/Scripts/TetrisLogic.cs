@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tetris.Scripts {
@@ -7,6 +8,8 @@ namespace Tetris.Scripts {
         private readonly int _maxY = TetrisStatics.maxY + 1;
         private readonly List<GameObject> _tetrisBlocks = new List<GameObject>();
         private Transform[,] _blocks;
+
+        public event Action OnCompleteRow;
 
         [SerializeField] private Spawner spawner;
 
@@ -31,6 +34,7 @@ namespace Tetris.Scripts {
                 if (IsCompleteRow(i)) {
                     DeleteRow(i);
                     RowsDown(i);
+                    OnCompleteRow?.Invoke();
                 }
             }
         }
@@ -83,6 +87,22 @@ namespace Tetris.Scripts {
                     Destroy(tetrisBlock);
                 }
             }
+        }
+
+        public List<float> GetBlocks() {
+            List<float> blockList = new List<float>();
+            for (int y = 0; y < _maxY; y++) {
+                for (int x = 0; x < _maxX; x++) {
+                    if (_blocks[x, y]) {
+                        blockList.Add(1);
+                    }
+                    else {
+                        blockList.Add(0);
+                    }
+                }
+            }
+
+            return blockList;
         }
     }
 }

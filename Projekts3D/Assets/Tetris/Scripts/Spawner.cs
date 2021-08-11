@@ -9,6 +9,7 @@ namespace Tetris.Scripts {
         [HideInInspector] public bool isEnabled = true;
 
         public event Action<Block> OnSpawnedBlock;
+        public event Action OnGameOver;
 
         private GameObject lastSpawnedBlock;
 
@@ -32,11 +33,8 @@ namespace Tetris.Scripts {
             var col = Physics.OverlapBox(transform.position + Vector3.up * 0.3f,
                 (Vector3.one * 0.1f) + Vector3.right * (TetrisStatics.maxX * 0.5f - 1));
             if (col.Length > 0) {
-                Debug.Log("Game Over!: Length: " + col.Length + " |");
-                foreach (var collider1 in col) {
-                    Debug.Log(collider1.gameObject.transform.parent + " | \n" + collider1.transform.position);
-                }
-
+                Debug.Log("Game Over!");
+                OnGameOver?.Invoke();
                 return;
             }
 
@@ -47,7 +45,6 @@ namespace Tetris.Scripts {
         }
 
         void OnDrawGizmos() {
-            // Draw a semitransparent blue cube at the transforms position
             Gizmos.color = new Color(1, 0, 0, 0.5f);
             Vector3 halfSize = (Vector3.one * 0.1f) + Vector3.right * (TetrisStatics.maxX * 0.5f - 1);
             Gizmos.DrawCube(transform.position + Vector3.up * 0.3f, halfSize * 2);

@@ -444,5 +444,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb8017337fdfed34b92d6996f181a1a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 5
   rotatePosition: {x: 0, y: -1, z: 0}
   hasOnly2Rotations: 0

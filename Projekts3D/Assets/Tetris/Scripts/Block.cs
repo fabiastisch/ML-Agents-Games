@@ -6,10 +6,12 @@ namespace Tetris.Scripts {
         public event Action<Block> OnEnterGround;
         private Rigidbody _rb;
 
+        public TetrisBlockType type;
         [SerializeField] private Vector3 rotatePosition;
         [SerializeField] private bool hasOnly2Rotations = false;
         private bool _isRotated = false;
         private bool _isGrounded = false;
+        public int rotation = 0;
 
         // Start is called before the first frame update
         void Start() {
@@ -41,6 +43,9 @@ namespace Tetris.Scripts {
             transform.RotateAround(transform.TransformPoint(rotatePosition), Vector3.forward, -angle);
             if (!IsValidMove(Vector3.zero)) {
                 transform.RotateAround(transform.TransformPoint(rotatePosition), Vector3.forward, angle);
+            }
+            else {
+                rotation = (rotation + 1) % 4;
             }
         }
 
@@ -107,12 +112,6 @@ namespace Tetris.Scripts {
         }
 
         private void OnCollisionEnter(Collision other) {
-            //if (!_isGrounded) {
-            //    Debug.Log("Collision at: " + other.contacts[0].normal + "\n " 
-            //              + other.contacts[0].point);
-            //}
-            // Debug.Log(other.contacts[0].point);
-            //other.gameObject.transform.localPosition.y
             if (!_isGrounded) {
                 OnEnterGround?.Invoke(this);
             }
@@ -120,5 +119,14 @@ namespace Tetris.Scripts {
             _isGrounded = true;
             _rb.isKinematic = true;
         }
+    }
+
+    public enum TetrisBlockType {
+        I,
+        L,
+        O,
+        S,
+        T,
+        Z
     }
 }
