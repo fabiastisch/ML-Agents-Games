@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Tetris.Scripts {
     public class TetrisLogic : MonoBehaviour {
         private readonly int _maxX = TetrisStatics.maxX + 1;
         private readonly int _maxY = TetrisStatics.maxY + 1;
+        private readonly List<GameObject> _tetrisBlocks = new List<GameObject>();
         private Transform[,] _blocks;
 
         [SerializeField] private Spawner spawner;
@@ -15,6 +17,7 @@ namespace Tetris.Scripts {
 
         private void SpawnerOnOnSpawnedBlock(Block block) {
             block.OnEnterGround += BlockOnOnEnterGround;
+            _tetrisBlocks.Add(block.gameObject);
         }
 
         private void BlockOnOnEnterGround(Block block) {
@@ -55,7 +58,7 @@ namespace Tetris.Scripts {
 
         private bool IsCompleteRow(int rowIndex) {
             for (int i = 0; i < _maxX; i++) {
-                Debug.Log(i + " | " + rowIndex);
+                //Debug.Log(i + " | " + rowIndex);
                 if (_blocks[i, rowIndex] == null) {
                     return false;
                 }
@@ -69,8 +72,16 @@ namespace Tetris.Scripts {
                 var position = child.transform.position;
                 int x = Mathf.RoundToInt(position.x);
                 int y = Mathf.RoundToInt(position.y);
-                Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
+                //Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
                 _blocks[x, y] = child;
+            }
+        }
+
+        public void ResetGame() {
+            foreach (GameObject tetrisBlock in _tetrisBlocks) {
+                if (tetrisBlock) {
+                    Destroy(tetrisBlock);
+                }
             }
         }
     }

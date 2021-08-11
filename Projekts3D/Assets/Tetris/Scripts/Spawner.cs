@@ -7,10 +7,11 @@ namespace Tetris.Scripts {
         [SerializeField] private List<GameObject> spawnableBlocks;
 
         [HideInInspector] public bool isEnabled = true;
-        
+
         public event Action<Block> OnSpawnedBlock;
 
         private GameObject lastSpawnedBlock;
+
         private void Start() {
         }
 
@@ -18,6 +19,7 @@ namespace Tetris.Scripts {
             if (lastSpawnedBlock) {
                 DestroyImmediate(lastSpawnedBlock);
             }
+
             SpawnNext();
         }
 
@@ -26,9 +28,15 @@ namespace Tetris.Scripts {
                 return;
             }
 
-            var col = new Collider[1];
-            if (Physics.OverlapBoxNonAlloc(transform.position, (Vector3.one * 0.4f) + Vector3.right * (TetrisStatics.maxX * 0.5f -1), col) > 0) {
-                Debug.Log("Game Over!");
+            Debug.Log("SpawnNext");
+            var col = Physics.OverlapBox(transform.position + Vector3.up * 0.3f,
+                (Vector3.one * 0.1f) + Vector3.right * (TetrisStatics.maxX * 0.5f - 1));
+            if (col.Length > 0) {
+                Debug.Log("Game Over!: Length: " + col.Length + " |");
+                foreach (var collider1 in col) {
+                    Debug.Log(collider1.gameObject.transform.parent + " | \n" + collider1.transform.position);
+                }
+
                 return;
             }
 
@@ -38,5 +46,11 @@ namespace Tetris.Scripts {
             OnSpawnedBlock?.Invoke(spawned.GetComponent<Block>());
         }
 
+        void OnDrawGizmos() {
+            // Draw a semitransparent blue cube at the transforms position
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Vector3 halfSize = (Vector3.one * 0.1f) + Vector3.right * (TetrisStatics.maxX * 0.5f - 1);
+            Gizmos.DrawCube(transform.position + Vector3.up * 0.3f, halfSize * 2);
+        }
     }
 }

@@ -20,6 +20,10 @@ namespace Tetris.Scripts {
                 spawner.isEnabled = !spawner.isEnabled;
             }
 
+            //WithoutAgent();
+        }
+
+        private void WithoutAgent() {
             if (Input.GetKeyDown(KeyCode.UpArrow)) {
                 _currentBlock.TryToRotate();
             }

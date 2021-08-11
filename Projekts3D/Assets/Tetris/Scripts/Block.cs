@@ -15,6 +15,8 @@ namespace Tetris.Scripts {
         void Start() {
             _rb = GetComponent<Rigidbody>();
             _rb.velocity = Vector3.down;
+            foreach (Transform child in transform) {
+            }
         }
 
         // Update is called once per frame
@@ -105,9 +107,17 @@ namespace Tetris.Scripts {
         }
 
         private void OnCollisionEnter(Collision other) {
+            //if (!_isGrounded) {
+            //    Debug.Log("Collision at: " + other.contacts[0].normal + "\n " 
+            //              + other.contacts[0].point);
+            //}
+            // Debug.Log(other.contacts[0].point);
             //other.gameObject.transform.localPosition.y
+            if (!_isGrounded) {
+                OnEnterGround?.Invoke(this);
+            }
+
             _isGrounded = true;
-            OnEnterGround?.Invoke(this);
             _rb.isKinematic = true;
         }
     }
