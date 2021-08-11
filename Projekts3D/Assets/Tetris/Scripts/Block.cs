@@ -1,10 +1,9 @@
 using System;
-using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Tetris.Scripts {
     public class Block : MonoBehaviour {
-        public event Action OnEnterGround;
+        public event Action<Block> OnEnterGround;
         private Rigidbody _rb;
 
         [SerializeField] private Vector3 rotatePosition;
@@ -106,15 +105,10 @@ namespace Tetris.Scripts {
         }
 
         private void OnCollisionEnter(Collision other) {
+            //other.gameObject.transform.localPosition.y
             _isGrounded = true;
-            OnEnterGround?.Invoke();
+            OnEnterGround?.Invoke(this);
             _rb.isKinematic = true;
-        }
-
-        public void EnableGravity() {
-            Debug.Log("Gravity?");
-            _rb.isKinematic = false;
-            _rb.velocity = Vector3.down;
         }
     }
 }
