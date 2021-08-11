@@ -1,14 +1,16 @@
+using System;
 using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace Tetris.Scripts {
     public class Block : MonoBehaviour {
-        
+        public event Action OnEnterGround;
         private Rigidbody _rb;
 
         [SerializeField] private Vector3 rotatePosition;
         [SerializeField] private bool hasOnly2Rotations = false;
         private bool _isRotated = false;
+        private bool _isGrounded = false;
 
         // Start is called before the first frame update
         void Start() {
@@ -20,12 +22,17 @@ namespace Tetris.Scripts {
         void Update() {
         }
 
-        public void Rotate() {
+        public void TryToRotate() {
+            if (_isGrounded) {
+                return;
+            }
+
             if (hasOnly2Rotations) {
                 RotateInternal(_isRotated ? 90 : -90);
                 _isRotated = !_isRotated;
                 return;
             }
+
             RotateInternal(90);
         }
 
@@ -37,6 +44,7 @@ namespace Tetris.Scripts {
         }
 
         public void TryToMove(Vector3 dir) {
+            if (_isGrounded) return;
             if (IsValidMove(dir)) {
                 transform.position += dir;
             }
@@ -55,11 +63,29 @@ namespace Tetris.Scripts {
 
             // Physics.OverlapBox()
             foreach (Transform child in transform) {
-                Collider[] colliders = Physics.OverlapBox(child.position + dir, Vector3.one * 0.4f, Quaternion.identity,
-                    customLayerMask);
-                if (colliders.Length > 0) {
-                    setChildLayerMask("Default");
-                    return false;
+                // We only need one collision. 
+                Collider[] colliders = new Collider[1];
+                int collisions;
+                if (dir == Vector3.down) {
+                    var pos = child.position + dir;
+                    pos.y = Mathf.RoundToInt(pos.y);
+                    //colliders = Physics.OverlapBox(child.position + dir, Vector3.one * 0.4f, Quaternion.identity, customLayerMask);
+                    collisions = Utils.CheckPositionBox(pos, colliders, customLayerMask);
+                    //Debug.Log(collisions);
+                    if (collisions > 0) {
+                        setChildLayerMask("Default");
+                        return false;
+                    }
+                }
+                else {
+                    collisions = Utils.CheckPositionBox(child.position + dir, colliders, customLayerMask);
+                    //Physics.OverlapBoxNonAlloc(child.position + dir, Vector3.one * 0.4f, colliders, Quaternion.identity, customLayerMask);
+                    //Debug.Log(collisions);
+
+                    if (collisions > 0) {
+                        setChildLayerMask("Default");
+                        return false;
+                    }
                 }
             }
 
@@ -77,6 +103,12 @@ namespace Tetris.Scripts {
 
         public void MoveDown() {
             TryToMove(Vector3.down);
+        }
+
+        private void OnCollisionEnter(Collision other) {
+            _isGrounded = true;
+            OnEnterGround?.Invoke();
+            _rb.isKinematic = true;
         }
     }
 }

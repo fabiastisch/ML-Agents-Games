@@ -240,7 +240,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 122
   m_CollisionDetection: 0
 --- !u!114 &1495573536089343456
 MonoBehaviour:
@@ -255,6 +255,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatePosition: {x: 0, y: -1, z: 0}
+  hasOnly2Rotations: 0
 --- !u!1 &894594268064314854
 GameObject:
   m_ObjectHideFlags: 0

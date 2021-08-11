@@ -938,7 +938,7 @@ GameObject:
   - component: {fileID: 1411486324}
   m_Layer: 0
   m_Name: Border
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1205,6 +1205,7 @@ MonoBehaviour:
   - {fileID: 2214693975499890106, guid: 62aad4317df33664d8eb2f5ae3959186, type: 3}
   - {fileID: 894594267637113953, guid: ef9992cbd807f624a84b50bf32356533, type: 3}
   - {fileID: 3790636877184386820, guid: 517e3c532c845bc4a931f90ed68b1042, type: 3}
+  isEnabled: 1
 --- !u!1 &1741237086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,7 +1315,7 @@ GameObject:
   - component: {fileID: 1743424510}
   m_Layer: 0
   m_Name: Border (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1409,7 +1410,7 @@ GameObject:
   - component: {fileID: 1743600870}
   m_Layer: 0
   m_Name: Border (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

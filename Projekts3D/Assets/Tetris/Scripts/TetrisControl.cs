@@ -14,6 +14,10 @@ namespace Tetris.Scripts {
                 spawner.SpawnNext();
             }
 
+            if (Input.GetKeyDown(KeyCode.P)) {
+                spawner.isEnabled = !spawner.isEnabled;
+            }
+
             /*
              * <- Move Left
              * -> Move Right
@@ -21,7 +25,7 @@ namespace Tetris.Scripts {
              * down Move down
              */
             if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                spawner.GetCurrentBlock()?.GetComponent<Block>().Rotate();
+                spawner.GetCurrentBlock()?.GetComponent<Block>().TryToRotate();
             }
             else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
                 spawner.GetCurrentBlock()?.GetComponent<Block>().MoveLeft();
@@ -29,7 +33,7 @@ namespace Tetris.Scripts {
             else if (Input.GetKeyDown(KeyCode.RightArrow)) {
                 spawner.GetCurrentBlock()?.GetComponent<Block>().MoveRight();
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            else if (Input.GetKey(KeyCode.DownArrow)) {
                 spawner.GetCurrentBlock()?.GetComponent<Block>().MoveDown();
             }
         }
