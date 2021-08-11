@@ -33,7 +33,7 @@ namespace Tetris.Scripts {
             else if (Input.GetKeyDown(KeyCode.RightArrow)) {
                 spawner.GetCurrentBlock()?.GetComponent<Block>().MoveRight();
             }
-            else if (Input.GetKey(KeyCode.DownArrow)) {
+            else if (Input.GetKeyDown(KeyCode.DownArrow)) {
                 spawner.GetCurrentBlock()?.GetComponent<Block>().MoveDown();
             }
         }

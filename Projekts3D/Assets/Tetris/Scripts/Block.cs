@@ -110,5 +110,11 @@ namespace Tetris.Scripts {
             OnEnterGround?.Invoke();
             _rb.isKinematic = true;
         }
+
+        public void EnableGravity() {
+            Debug.Log("Gravity?");
+            _rb.isKinematic = false;
+            _rb.velocity = Vector3.down;
+        }
     }
 }
