@@ -65,12 +65,14 @@ namespace Tetris.Scripts {
         }
 
         public override void OnActionReceived(ActionBuffers actions) {
-            //Debug.Log("OnActionReceived: " + actions.DiscreteActions[0]);
+            Debug.Log("OnActionReceived: " + actions.DiscreteActions[0]);
             //Debug.Log("OnActionReceived: " + actions.ContinuousActions[0]);
             int action = actions.DiscreteActions[0];
+            if (!_currentBlock) {
+                return;
+            }
             switch (action) {
                 case 1:
-                    _currentBlock.TryToRotate();
                     break;
                 case 2:
                     _currentBlock.MoveLeft();
