@@ -1,3 +1,7 @@
+# MLAgents Stuff
+/Assets/ML-Agents/Timers*
+/results/ppo/**/
+
 # Jetbrains Stuff
 .idea
 
