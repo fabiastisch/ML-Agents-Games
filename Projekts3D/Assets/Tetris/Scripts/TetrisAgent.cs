@@ -1,4 +1,5 @@
-﻿using Unity.MLAgents;
+﻿using System.Linq;
+using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Tetris.Scripts {
 
         public override void OnEpisodeBegin() {
             tetrisLogic.ResetGame();
-            spawner.SpawnNext();
+            spawner.StartTryToSpawnNext();
         }
 
         private void Start() {
@@ -51,6 +52,9 @@ namespace Tetris.Scripts {
         }
 
         public override void CollectObservations(VectorSensor sensor) {
+            if (!_currentBlock) return;
+            //Debug.Log(_currentBlock);
+            //Debug.Log(_currentBlock.transform.position);
             // Block Position, Typ and Rotation
             sensor.AddObservation(_currentBlock.transform.position.x);
             sensor.AddObservation(_currentBlock.transform.position.y);

@@ -6,8 +6,9 @@ namespace Tetris.Scripts {
     public class TetrisLogic : MonoBehaviour {
         private readonly int _maxX = TetrisStatics.maxX + 1;
         private readonly int _maxY = TetrisStatics.maxY + 1;
-        private readonly List<GameObject> _tetrisBlocks = new List<GameObject>();
+        private readonly List<Block> _tetrisBlocks = new List<Block>();
         private Transform[,] _blocks;
+        private Block _currentBlock;
 
         public event Action OnCompleteRow;
 
@@ -16,15 +17,25 @@ namespace Tetris.Scripts {
         private void Start() {
             _blocks = new Transform[_maxX, _maxY];
             spawner.OnSpawnedBlock += SpawnerOnOnSpawnedBlock;
+            spawner.OnGameOver += () => {
+                foreach (Block tetrisBlock in _tetrisBlocks) {
+                    if (tetrisBlock) tetrisBlock.OnEnterGround -= BlockOnOnEnterGround;
+                }
+            };
         }
 
         private void SpawnerOnOnSpawnedBlock(Block block) {
+            _currentBlock = block;
             block.OnEnterGround += BlockOnOnEnterGround;
-            _tetrisBlocks.Add(block.gameObject);
+            _tetrisBlocks.Add(block);
         }
 
         private void BlockOnOnEnterGround(Block block) {
-            spawner.SpawnNext();
+            if (block.Equals(_currentBlock)) {
+                //Debug.Log("BlockOnOnEnterGround");
+                spawner.SpawnNext();
+            }
+
             AddBlockToBlocks(block);
             CheckRows();
         }
@@ -82,9 +93,9 @@ namespace Tetris.Scripts {
         }
 
         public void ResetGame() {
-            foreach (GameObject tetrisBlock in _tetrisBlocks) {
+            foreach (Block tetrisBlock in _tetrisBlocks) {
                 if (tetrisBlock) {
-                    Destroy(tetrisBlock);
+                    Destroy(tetrisBlock.gameObject);
                 }
             }
         }

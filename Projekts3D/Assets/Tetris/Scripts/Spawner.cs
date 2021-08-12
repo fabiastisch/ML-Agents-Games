@@ -13,7 +13,25 @@ namespace Tetris.Scripts {
 
         private GameObject lastSpawnedBlock;
 
+        private bool _tryToSpawnNext;
+
         private void Start() {
+        }
+
+        public void StartTryToSpawnNext() {
+            _tryToSpawnNext = true;
+        }
+
+        private void Update() {
+            if (_tryToSpawnNext) {
+                if (isSpawnable()) {
+                    if (lastSpawnedBlock) {
+                        DestroyImmediate(lastSpawnedBlock);
+                    }
+                    SpawnNext();
+                    _tryToSpawnNext = false;
+                }
+            }
         }
 
         public void TEMP_SpawnOther() {
@@ -29,19 +47,26 @@ namespace Tetris.Scripts {
                 return;
             }
 
-            Debug.Log("SpawnNext");
-            var col = Physics.OverlapBox(transform.position + Vector3.up * 0.3f,
-                (Vector3.one * 0.1f) + Vector3.right * (TetrisStatics.maxX * 0.5f - 1));
-            if (col.Length > 0) {
-                Debug.Log("Game Over!");
+            if (!isSpawnable()) {
                 OnGameOver?.Invoke();
-                return;
             }
+            //Debug.Log("SpawnNext");
+            
 
             GameObject spawned = Instantiate(spawnableBlocks[Utils.GetRandomInt(spawnableBlocks.Count - 1)], transform.position,
                 Quaternion.identity);
             lastSpawnedBlock = spawned;
             OnSpawnedBlock?.Invoke(spawned.GetComponent<Block>());
+        }
+
+        private bool isSpawnable() {
+            var col = Physics.OverlapBox(transform.position + Vector3.up * 0.3f,
+                (Vector3.one * 0.1f) + Vector3.right * (TetrisStatics.maxX * 0.5f - 1));
+            if (col.Length > 0) {
+                return false;
+            }
+
+            return true;
         }
 
         void OnDrawGizmos() {

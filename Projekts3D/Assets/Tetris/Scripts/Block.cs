@@ -113,6 +113,7 @@ namespace Tetris.Scripts {
 
         private void OnCollisionEnter(Collision other) {
             if (!_isGrounded) {
+                //Debug.Log(other.contacts[0].normal + " Point: " + other.contacts[0].point);
                 OnEnterGround?.Invoke(this);
             }
 
