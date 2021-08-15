@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using Unity.MLAgents;
+﻿using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
 namespace Tetris.Scripts {
@@ -9,6 +9,8 @@ namespace Tetris.Scripts {
         [SerializeField] private Spawner spawner;
         [SerializeField] private TetrisLogic tetrisLogic;
         private Block _currentBlock;
+
+        [Observable] public bool[,] state = new bool[TetrisStatics.maxX, TetrisStatics.maxY];
 
         public override void OnEpisodeBegin() {
             tetrisLogic.ResetGame();
@@ -51,19 +53,6 @@ namespace Tetris.Scripts {
             }
         }
 
-        public override void CollectObservations(VectorSensor sensor) {
-            if (!_currentBlock) return;
-            //Debug.Log(_currentBlock);
-            //Debug.Log(_currentBlock.transform.position);
-            // Block Position, Typ and Rotation
-            sensor.AddObservation(_currentBlock.transform.position.x);
-            sensor.AddObservation(_currentBlock.transform.position.y);
-            sensor.AddObservation((int) _currentBlock.type);
-            sensor.AddObservation(_currentBlock.rotation);
-            // Filled Grid
-            sensor.AddObservation(tetrisLogic.GetBlocks());
-        }
-
         public override void OnActionReceived(ActionBuffers actions) {
             Debug.Log("OnActionReceived: " + actions.DiscreteActions[0]);
             //Debug.Log("OnActionReceived: " + actions.ContinuousActions[0]);
@@ -73,6 +62,7 @@ namespace Tetris.Scripts {
             }
             switch (action) {
                 case 1:
+                    _currentBlock.TryToRotate();
                     break;
                 case 2:
                     _currentBlock.MoveLeft();

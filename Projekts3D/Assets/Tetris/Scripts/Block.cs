@@ -115,6 +115,11 @@ namespace Tetris.Scripts {
             if (!_isGrounded) {
                 //Debug.Log(other.contacts[0].normal + " Point: " + other.contacts[0].point);
                 OnEnterGround?.Invoke(this);
+                var position = transform.position;
+                int x = Mathf.RoundToInt(position.x);
+                int y = Mathf.RoundToInt(position.y);
+                position = new Vector3(x, y, position.z);
+                transform.position = position;
             }
 
             _isGrounded = true;

@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
 namespace Tetris.Scripts {
     public class TetrisLogic : MonoBehaviour {
-        private readonly int _maxX = TetrisStatics.maxX + 1;
-        private readonly int _maxY = TetrisStatics.maxY + 1;
+        private readonly int _maxX = TetrisStatics.maxX;
+        private readonly int _maxY = TetrisStatics.maxY;
         private readonly List<Block> _tetrisBlocks = new List<Block>();
         private Transform[,] _blocks;
         private Block _currentBlock;
+        [SerializeField] private TetrisAgent _agent;
+        private bool[,] boolBlocks {
+            get => _agent.state;
+            set => _agent.state = value;
+        }
 
         public event Action OnCompleteRow;
 
@@ -54,6 +60,7 @@ namespace Tetris.Scripts {
             for (int i = 0; i < _maxX; i++) {
                 Destroy(_blocks[i, rowIndex].gameObject);
                 _blocks[i, rowIndex] = null;
+                boolBlocks[i, rowIndex] = false;
             }
         }
 
@@ -67,6 +74,8 @@ namespace Tetris.Scripts {
                     _blocks[x, y - 1] = _blocks[x, y];
                     _blocks[x, y] = null;
                     _blocks[x, y - 1].transform.position += Vector3.down;
+                    boolBlocks[x, y - 1] = boolBlocks[x, y];
+                    boolBlocks[x, y] = false;
                 }
             }
         }
@@ -89,6 +98,7 @@ namespace Tetris.Scripts {
                 int y = Mathf.RoundToInt(position.y);
                 //Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
                 _blocks[x, y] = child;
+                boolBlocks[x, y] = child != null;
             }
         }
 
@@ -98,22 +108,22 @@ namespace Tetris.Scripts {
                     Destroy(tetrisBlock.gameObject);
                 }
             }
+            _tetrisBlocks.Clear();
+            _blocks = new Transform[_maxX, _maxY];
+            boolBlocks = new bool[_maxX, _maxY];
         }
 
-        public List<float> GetBlocks() {
-            List<float> blockList = new List<float>();
-            for (int y = 0; y < _maxY; y++) {
-                for (int x = 0; x < _maxX; x++) {
-                    if (_blocks[x, y]) {
-                        blockList.Add(1);
-                    }
-                    else {
-                        blockList.Add(0);
-                    }
-                }
+        public bool[,] GetBlocks() {
+            Debug.Log("GetBlocks");
+            var bools = boolBlocks;
+            foreach (Transform child in _currentBlock.transform) {
+                Vector3 position = child.position;
+                int x = Mathf.RoundToInt(position.x);
+                int y = Mathf.RoundToInt(position.y);
+                bools[x, y] = child != null;
             }
 
-            return blockList;
+            return bools;
         }
     }
 }
