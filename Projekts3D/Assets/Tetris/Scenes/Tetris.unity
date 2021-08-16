@@ -847,6 +847,7 @@ GameObject:
   - component: {fileID: 1751877218}
   - component: {fileID: 1751877217}
   - component: {fileID: 1751877219}
+  - component: {fileID: 1751877220}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -930,6 +931,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 1
   TakeActionsBetweenDecisions: 1
+--- !u!114 &1751877220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751877215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102471f48f3e4748b127c17107d5637d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obj: {fileID: 1751877217}
+  height: 19
+  width: 10
 --- !u!1 &1844976370
 GameObject:
   m_ObjectHideFlags: 0

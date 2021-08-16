@@ -1,16 +1,15 @@
 ﻿using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
-using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
 namespace Tetris.Scripts {
-    public class TetrisAgent : Agent {
+    public class TetrisAgent : Agent, My2DArrayObservable {
         [SerializeField] private Spawner spawner;
         [SerializeField] private TetrisLogic tetrisLogic;
         private Block _currentBlock;
 
-        [Observable] public bool[,] state = new bool[TetrisStatics.maxX, TetrisStatics.maxY];
+        [Observable] public bool[,] state = new bool[TetrisStatics.maxY, TetrisStatics.maxX];
 
         public override void OnEpisodeBegin() {
             tetrisLogic.ResetGame();
@@ -74,6 +73,10 @@ namespace Tetris.Scripts {
                     _currentBlock.MoveDown();
                     break;
             }
+        }
+
+        public bool[,] get2DArray() {
+            return this.state;
         }
     }
 }
