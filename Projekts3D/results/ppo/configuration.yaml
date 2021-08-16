@@ -39,7 +39,7 @@ behaviors:
     self_play: null
     behavioral_cloning: null
 env_settings:
-  env_path: null
+  env_path: Build/Projekts3D.exe
   env_args: null
   base_port: 5005
   num_envs: 1
