@@ -15,6 +15,11 @@ namespace Tetris.Scripts {
             set => _agent.state = value;
         }
 
+        private List<float> floatBlocks {
+            get => _agent.floatState;
+            set => _agent.floatState = value;
+        }
+
         public event Action OnCompleteRow;
 
         [SerializeField] private Spawner spawner;
@@ -60,6 +65,8 @@ namespace Tetris.Scripts {
                 Destroy(_blocks[i, rowIndex].gameObject);
                 _blocks[i, rowIndex] = null;
                 boolBlocks[rowIndex, i] = false;
+                floatBlocks[rowIndex * TetrisStatics.maxY + i] = 0;
+                
             }
         }
 
@@ -74,7 +81,9 @@ namespace Tetris.Scripts {
                     _blocks[x, y] = null;
                     _blocks[x, y - 1].transform.position += Vector3.down;
                     boolBlocks[y - 1, x] = boolBlocks[x, y];
+                    floatBlocks[(y-1) * TetrisStatics.maxY + x] = floatBlocks[x * TetrisStatics.maxY + y] = 0;;
                     boolBlocks[y,x] = false;
+                    floatBlocks[y * TetrisStatics.maxY + x] = 0;
                 }
             }
         }
@@ -98,6 +107,7 @@ namespace Tetris.Scripts {
                 //Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
                 _blocks[x, y] = child;
                 boolBlocks[y,x] = child != null;
+                floatBlocks[y * TetrisStatics.maxY + x] = 0;
             }
         }
 
@@ -110,6 +120,7 @@ namespace Tetris.Scripts {
             _tetrisBlocks.Clear();
             _blocks = new Transform[_maxX, _maxY];
             boolBlocks = new bool[_maxY, _maxX];
+            floatBlocks = new List<float>();
         }
 
         public bool[,] GetBlocks() {

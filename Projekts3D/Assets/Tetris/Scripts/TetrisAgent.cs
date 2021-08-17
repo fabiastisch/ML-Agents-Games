@@ -1,5 +1,7 @@
-﻿using Unity.MLAgents;
+﻿using System.Collections.Generic;
+using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
@@ -8,8 +10,9 @@ namespace Tetris.Scripts {
         [SerializeField] private Spawner spawner;
         [SerializeField] private TetrisLogic tetrisLogic;
         private Block _currentBlock;
+        public List<float> floatState = new List<float>();
 
-        [Observable] public bool[,] state = new bool[TetrisStatics.maxY, TetrisStatics.maxX];
+        public bool[,] state = new bool[TetrisStatics.maxY, TetrisStatics.maxX];
 
         public override void OnEpisodeBegin() {
             tetrisLogic.ResetGame();
@@ -33,6 +36,10 @@ namespace Tetris.Scripts {
 
         private void SpawnerOnOnGameOver() {
             EndEpisode();
+        }
+
+        public override void CollectObservations(VectorSensor sensor) {
+            sensor.AddObservation(floatState);
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
