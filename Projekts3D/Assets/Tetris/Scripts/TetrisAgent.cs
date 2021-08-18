@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -66,6 +67,7 @@ namespace Tetris.Scripts {
             if (!_currentBlock) {
                 return;
             }
+
             switch (action) {
                 case 1:
                     _currentBlock.TryToRotate();
@@ -84,6 +86,13 @@ namespace Tetris.Scripts {
 
         public bool[,] get2DArray() {
             return this.state;
+        }
+
+        private void OnDrawGizmos() {
+            Vector3 startpos = transform.position + Vector3.down * 9 + Vector3.right *3;
+            // Draw a semitransparent blue cube at the transforms position
+            DebugUtils.Draw2DGizmos(startpos, state);
+           
         }
     }
 }
