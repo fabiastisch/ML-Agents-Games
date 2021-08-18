@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Unity.MLAgents;
+﻿using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using Unity.MLAgents.Sensors.Reflection;
 using UnityEngine;
 
 namespace Tetris.Scripts {
-    public class TetrisAgent : Agent, My2DArrayObservable {
+    public class TetrisAgent : Agent {
         [SerializeField] private Spawner spawner;
         [SerializeField] private TetrisLogic tetrisLogic;
         private Block _currentBlock;
-        public List<float> floatState = new List<float>();
-
         public bool[,] state = new bool[TetrisStatics.maxY, TetrisStatics.maxX];
 
         public override void OnEpisodeBegin() {
@@ -40,7 +35,7 @@ namespace Tetris.Scripts {
         }
 
         public override void CollectObservations(VectorSensor sensor) {
-            sensor.AddObservation(floatState);
+            sensor.AddObservation(Utils.ArrayToList(AddCurrentBlock(state)));
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
@@ -84,15 +79,28 @@ namespace Tetris.Scripts {
             }
         }
 
-        public bool[,] get2DArray() {
-            return this.state;
+        private void OnDrawGizmos() {
+            Vector3 startPos = transform.position + Vector3.down * 9 + Vector3.right * 3;
+            DebugUtils.Draw2DListGizmos(startPos, Utils.ArrayToList(AddCurrentBlock(state)), TetrisStatics.maxY);
         }
 
-        private void OnDrawGizmos() {
-            Vector3 startpos = transform.position + Vector3.down * 9 + Vector3.right *3;
-            // Draw a semitransparent blue cube at the transforms position
-            DebugUtils.Draw2DGizmos(startpos, state);
-           
+        private bool[,] AddCurrentBlock(bool[,] array) {
+            if (!_currentBlock) {
+                return array;
+            }
+            bool[,] copy = array.Clone() as bool[,];
+            
+            foreach (Transform child in _currentBlock.transform) {
+                var position = child.transform.position;
+                int x = Mathf.RoundToInt(position.x);
+                int y = Mathf.RoundToInt(position.y);
+                //Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
+
+                System.Diagnostics.Debug.Assert(copy != null, nameof(copy) + " != null");
+                copy[y, x] = true;
+            }
+
+            return copy;
         }
     }
 }

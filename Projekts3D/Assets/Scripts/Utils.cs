@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,5 +22,15 @@ public class Utils {
 
     public static Collider[] CheckPosBox(Vector3 center) {
         return Physics.OverlapBox(center, Vector3.one * 0.4f, Quaternion.identity);
+    }
+
+    public static List<float> ArrayToList(bool[,] array) {
+        List<float> list = new List<float>();
+        for (int i = 0; i < array.GetLength(0); i++) {
+            for (int j = 0; j < array.GetLength(1); j++) {
+                list.Add(array[i, j] ? 1 : 0);
+            }
+        }
+        return list;
     }
 }

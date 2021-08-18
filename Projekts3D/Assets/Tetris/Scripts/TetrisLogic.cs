@@ -10,15 +10,12 @@ namespace Tetris.Scripts {
         private Transform[,] _blocks;
         private Block _currentBlock;
         [SerializeField] private TetrisAgent _agent;
+
         private bool[,] boolBlocks {
             get => _agent.state;
             set => _agent.state = value;
         }
 
-        private List<float> floatBlocks {
-            get => _agent.floatState;
-            set => _agent.floatState = value;
-        }
 
         public event Action OnCompleteRow;
 
@@ -65,8 +62,6 @@ namespace Tetris.Scripts {
                 Destroy(_blocks[i, rowIndex].gameObject);
                 _blocks[i, rowIndex] = null;
                 boolBlocks[rowIndex, i] = false;
-                floatBlocks[rowIndex * TetrisStatics.maxY + i] = 0;
-                
             }
         }
 
@@ -80,10 +75,10 @@ namespace Tetris.Scripts {
                     _blocks[x, y - 1] = _blocks[x, y];
                     _blocks[x, y] = null;
                     _blocks[x, y - 1].transform.position += Vector3.down;
-                    boolBlocks[y - 1, x] = boolBlocks[x, y];
-                    floatBlocks[(y-1) * TetrisStatics.maxY + x] = floatBlocks[x * TetrisStatics.maxY + y] = 0;;
-                    boolBlocks[y,x] = false;
-                    floatBlocks[y * TetrisStatics.maxY + x] = 0;
+                    
+                    boolBlocks[y - 1, x] = boolBlocks[y, x];
+                    boolBlocks[y, x] = false;
+                    
                 }
             }
         }
@@ -106,8 +101,7 @@ namespace Tetris.Scripts {
                 int y = Mathf.RoundToInt(position.y);
                 //Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
                 _blocks[x, y] = child;
-                boolBlocks[y,x] = child != null;
-                floatBlocks[y * TetrisStatics.maxY + x] = 0;
+                boolBlocks[y, x] = true || child != null;
             }
         }
 
@@ -120,20 +114,6 @@ namespace Tetris.Scripts {
             _tetrisBlocks.Clear();
             _blocks = new Transform[_maxX, _maxY];
             boolBlocks = new bool[_maxY, _maxX];
-            floatBlocks = new List<float>();
-        }
-
-        public bool[,] GetBlocks() {
-            Debug.Log("GetBlocks");
-            var bools = boolBlocks;
-            foreach (Transform child in _currentBlock.transform) {
-                Vector3 position = child.position;
-                int x = Mathf.RoundToInt(position.x);
-                int y = Mathf.RoundToInt(position.y);
-                bools[y,x] = child != null;
-            }
-
-            return bools;
         }
     }
 }
