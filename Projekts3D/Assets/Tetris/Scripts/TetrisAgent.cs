@@ -8,7 +8,6 @@ namespace Tetris.Scripts {
         [SerializeField] private Spawner spawner;
         [SerializeField] private TetrisLogic tetrisLogic;
         private Block _currentBlock;
-        public bool[,] state = new bool[TetrisStatics.maxY, TetrisStatics.maxX];
 
         public override void OnEpisodeBegin() {
             tetrisLogic.ResetGame();
@@ -17,26 +16,17 @@ namespace Tetris.Scripts {
 
         private void Start() {
             spawner.OnSpawnedBlock += SpawnerOnOnSpawnedBlock;
-            spawner.OnGameOver += SpawnerOnOnGameOver;
+            spawner.OnGameOver += EndEpisode;
             //tetrisLogic.OnCompleteRow += TetrisLogicOnOnCompleteRow;
         }
 
         private void SpawnerOnOnSpawnedBlock(Block block) {
             _currentBlock = block;
-            //AddReward(0.1f);
-        }
-
-        private void TetrisLogicOnOnCompleteRow() {
-            AddReward(5);
-        }
-
-        private void SpawnerOnOnGameOver() {
-            EndEpisode();
         }
 
         public override void CollectObservations(VectorSensor sensor) {
-            sensor.AddObservation(tetrisLogic.maxHeight);
-            sensor.AddObservation(Utils.ArrayToList(AddCurrentBlock(state)));
+            sensor.AddObservation(tetrisLogic.currentMaxHeight);
+            sensor.AddObservation(Utils.ArrayToList(AddCurrentBlock(tetrisLogic.boolBlocks)));
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
@@ -74,7 +64,7 @@ namespace Tetris.Scripts {
                 case 3:
                     _currentBlock.MoveRight();
                     break;
-                case 4:
+                case 4: // currently disabled
                     _currentBlock.MoveDown();
                     break;
             }
@@ -82,7 +72,7 @@ namespace Tetris.Scripts {
 
         private void OnDrawGizmosSelected() {
             Vector3 startPos = transform.position + Vector3.down * 9 + Vector3.right * 3;
-            DebugUtils.Draw2DListGizmos(startPos, Utils.ArrayToList(AddCurrentBlock(state)), TetrisStatics.maxY);
+            DebugUtils.Draw2DListGizmos(startPos, Utils.ArrayToList(AddCurrentBlock(tetrisLogic.boolBlocks)), TetrisStatics.maxY);
         }
 
         private bool[,] AddCurrentBlock(bool[,] array) {
@@ -91,21 +81,12 @@ namespace Tetris.Scripts {
             }
 
             bool[,] copy = array.Clone() as bool[,];
-            Transform parent = transform.parent;
 
-            foreach (Transform child in _currentBlock.transform) {
-                var position = parent.InverseTransformPoint(child.transform.position);
-                int x = Mathf.RoundToInt(position.x);
-                int y = Mathf.RoundToInt(position.y);
-                //Debug.Log("Add BLock to Blocks Y: " + x + " Y: " + y);
-                copy[y, x] = true;
-            }
-
+            tetrisLogic.IterateOverBlock(_currentBlock, (x, y, arg3) => {
+                if (copy != null) copy[y, x] = true;
+            });
+            
             return copy;
-        }
-
-        public void AddExternalReward(float value) {
-            AddReward(value);
         }
 
         public void SetGapsReward(int gaps) {
