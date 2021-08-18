@@ -25,11 +25,11 @@ namespace Tetris.Scripts {
         private void Update() {
             if (_tryToSpawnNext) {
                 if (isSpawnable()) {
+                    _tryToSpawnNext = false;
                     if (lastSpawnedBlock) {
                         DestroyImmediate(lastSpawnedBlock);
                     }
                     SpawnNext();
-                    _tryToSpawnNext = false;
                 }
             }
         }
@@ -49,6 +49,7 @@ namespace Tetris.Scripts {
 
             if (!isSpawnable()) {
                 OnGameOver?.Invoke();
+                return;
             }
             //Debug.Log("SpawnNext");
             

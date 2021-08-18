@@ -16,9 +16,7 @@ namespace Tetris.Scripts {
         // Start is called before the first frame update
         void Start() {
             _rb = GetComponent<Rigidbody>();
-            _rb.velocity = Vector3.down;
-            foreach (Transform child in transform) {
-            }
+            _rb.velocity = Vector3.down * 10;
         }
 
         // Update is called once per frame
