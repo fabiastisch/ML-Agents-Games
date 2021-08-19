@@ -1,3 +1,7 @@
+# MLAgents Stuff
+/Assets/ML-Agents/Timers*
+/results/ppo/**/
+
 # Jetbrains Stuff
 .idea
 
@@ -204,7 +208,8 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
+## Packages folder must be committed in Unity ##
+# **/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
