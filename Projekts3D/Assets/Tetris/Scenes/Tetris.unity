@@ -569,7 +569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &156506751
 Transform:
   m_ObjectHideFlags: 0
@@ -877,7 +877,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 1304837574}
   tetrisLogic: {fileID: 716246266}
-  maxHeight: 0
 --- !u!114 &298376713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1018,7 +1017,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &387753595
 Transform:
   m_ObjectHideFlags: 0
@@ -1343,7 +1342,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 975808220}
   tetrisLogic: {fileID: 1103676174}
-  maxHeight: 0
 --- !u!114 &484465193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1389,7 +1387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &485655191
 Transform:
   m_ObjectHideFlags: 0
@@ -1776,7 +1774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &652312619
 Transform:
   m_ObjectHideFlags: 0
@@ -1826,6 +1824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 1796848702}
+  currentMaxHeight: 0
   spawner: {fileID: 1792522721}
 --- !u!114 &660619268
 MonoBehaviour:
@@ -1980,6 +1979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 298376712}
+  currentMaxHeight: 0
   spawner: {fileID: 1304837574}
 --- !u!114 &716246267
 MonoBehaviour:
@@ -2213,7 +2213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &760514056
 Transform:
   m_ObjectHideFlags: 0
@@ -2750,7 +2750,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 1735813235}
   tetrisLogic: {fileID: 1798374447}
-  maxHeight: 0
 --- !u!114 &1042270883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2846,6 +2845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 484465192}
+  currentMaxHeight: 0
   spawner: {fileID: 975808220}
 --- !u!114 &1103676175
 MonoBehaviour:
@@ -2905,6 +2905,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 1145659084}
+  currentMaxHeight: 0
   spawner: {fileID: 1016895084}
 --- !u!114 &1117728473
 MonoBehaviour:
@@ -2998,7 +2999,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 1016895084}
   tetrisLogic: {fileID: 1117728472}
-  maxHeight: 0
 --- !u!114 &1145659085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3345,6 +3345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 1840271573}
+  currentMaxHeight: 0
   spawner: {fileID: 419937482}
 --- !u!114 &1172190825
 MonoBehaviour:
@@ -3516,6 +3517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 1751877217}
+  currentMaxHeight: 0
   spawner: {fileID: 1651630012}
 --- !u!1 &1391456398
 GameObject:
@@ -3817,7 +3819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1576042259
 Transform:
   m_ObjectHideFlags: 0
@@ -4187,7 +4189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1673357355
 Transform:
   m_ObjectHideFlags: 0
@@ -4722,7 +4724,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 1651630012}
   tetrisLogic: {fileID: 1324893243}
-  maxHeight: 0
 --- !u!114 &1751877218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4883,7 +4884,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 1792522721}
   tetrisLogic: {fileID: 660619267}
-  maxHeight: 0
 --- !u!114 &1796848703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4945,6 +4945,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 1042270882}
+  currentMaxHeight: 0
   spawner: {fileID: 1735813235}
 --- !u!114 &1798374448
 MonoBehaviour:
@@ -5133,7 +5134,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 419937482}
   tetrisLogic: {fileID: 1172190824}
-  maxHeight: 0
 --- !u!114 &1840271574
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5324,6 +5324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 2073802276}
+  currentMaxHeight: 0
   spawner: {fileID: 28074229}
 --- !u!114 &1997464771
 MonoBehaviour:
@@ -5417,7 +5418,6 @@ MonoBehaviour:
   MaxStep: 0
   spawner: {fileID: 28074229}
   tetrisLogic: {fileID: 1997464770}
-  maxHeight: 0
 --- !u!114 &2073802277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5596,7 +5596,7 @@ Camera:
   far clip plane: 20
   field of view: 80
   orthographic: 1
-  orthographic size: 12.336132
+  orthographic size: 25.918549
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5620,7 +5620,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144448282}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 10.5, z: -10}
+  m_LocalPosition: {x: 21.5, y: 19.25, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -13,7 +13,7 @@ behaviors:
       learning_rate_schedule: linear
     network_settings:
       normalize: false
-      hidden_units: 128
+      hidden_units: 256
       num_layers: 3
       vis_encode_type: simple
       memory:
@@ -27,9 +27,9 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
-    max_steps: 10000000
+    max_steps: 50000000
     time_horizon: 64
-    summary_freq: 20000
+    summary_freq: 50000
     threaded: false
     self_play: null
     behavioral_cloning: null
