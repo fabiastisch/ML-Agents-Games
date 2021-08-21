@@ -1,4 +1,3 @@
-using System;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -11,22 +10,22 @@ namespace AimBot.Scrips {
         private float _yRotation;
         private float mouseSensitivity = 10f;
         private Pistol _pistol;
-        private Vector3 _lastRotation;
+        private float _lastAngle;
+        private Quaternion _optimalRotation;
 
         public int AvailableSteps => MaxStep - StepCount;
 
         public override void Initialize() {
             _xRotation = 0;
             _yRotation = 0;
-            _lastRotation = transform.localEulerAngles;
             _pistol = GetComponent<Pistol>();
+            HardReset();
         }
 
         public override void CollectObservations(VectorSensor sensor) {
-            Quaternion rotation = Utils.getRotationToLookAt(gameObject, target.gameObject);
-            Vector3 _rotationDiff = rotation.eulerAngles - transform.rotation.eulerAngles;
-            sensor.AddObservation(_rotationDiff.x);
-            sensor.AddObservation(_rotationDiff.y);
+            Vector3 rotationDiff = _optimalRotation.eulerAngles - transform.rotation.eulerAngles;
+            sensor.AddObservation(rotationDiff.x);
+            sensor.AddObservation(rotationDiff.y);
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
@@ -41,27 +40,27 @@ namespace AimBot.Scrips {
             //Debug.Log(continuousActions[0] + " | " + continuousActions[1] + " | " + continuousActions[2]);
             float x = continuousActions[0] * mouseSensitivity;
             float y = continuousActions[1] * mouseSensitivity;
+            //Debug.Log("X: " + x + " | Y:" + y);
             _xRotation -= y;
             _yRotation += x;
+            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+            _yRotation = Mathf.Clamp(_yRotation, -180f, 180f);
+            //Debug.Log("X: " + _xRotation + " | Y:" + _yRotation);
             transform.localRotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
             CalculateDecisionReward();
 
             if (continuousActions[2] > 0.5) {
                 if (_pistol.Fire()) {
-                    AddReward(10f);
+                    AddReward(50f);
                     EndEpisode();
                 }
-                else AddReward(-2f);
+                else AddReward(-5f);
             }
         }
 
         private void CalculateDecisionReward() {
-            Quaternion rotation = Utils.getRotationToLookAt(gameObject, target.gameObject);
-            Vector3 newRotation = transform.localEulerAngles;
-            Vector3 lastDiff = rotation.eulerAngles - _lastRotation;
-            Vector3 newDiff = rotation.eulerAngles - newRotation;
-            Debug.Log(newDiff);
-            if (newDiff.magnitude < lastDiff.magnitude) {
+            float newAngle = Quaternion.Angle(transform.rotation, _optimalRotation);
+            if (newAngle < _lastAngle) {
                 //Debug.Log("Getting Closer");
                 AddReward(0.1f);
             }
@@ -70,12 +69,12 @@ namespace AimBot.Scrips {
                 AddReward(-0.1f);
             }
 
-            _lastRotation = transform.localEulerAngles;
+            _lastAngle = newAngle;
         }
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.F)) {
-                transform.rotation = Utils.getRotationToLookAt(gameObject, target.gameObject);
+                transform.rotation = _optimalRotation;
             }
 
             if (Input.GetKeyDown(KeyCode.R)) {
@@ -86,7 +85,13 @@ namespace AimBot.Scrips {
         public override void OnEpisodeBegin() {
             Debug.Log(this.GetCumulativeReward());
             target.ChangePosition();
+            HardReset();
+        }
+
+        private void HardReset() {
             transform.localRotation = Quaternion.identity;
+            _optimalRotation = Utils.getRotationToLookAt(gameObject, target.gameObject);
+            _lastAngle = Quaternion.Angle(transform.rotation, _optimalRotation);
         }
 
         private void OnDrawGizmos() {
