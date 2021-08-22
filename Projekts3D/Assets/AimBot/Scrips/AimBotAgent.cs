@@ -28,16 +28,28 @@ namespace AimBot.Scrips {
             sensor.AddObservation(rotationDiff.y);
         }
 
+        public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask) {
+            float angle = Quaternion.Angle(transform.rotation, _optimalRotation);
+            if (Mathf.Abs(angle) > 1f) {
+                actionMask.SetActionEnabled(0, 1, false);
+            }
+            else Debug.Log("WriteDiscreteActionMask: " + angle);
+        }
+
         public override void Heuristic(in ActionBuffers actionsOut) {
             var continuousActions = actionsOut.ContinuousActions;
             continuousActions[0] = Input.GetAxis("Mouse X");
             continuousActions[1] = Input.GetAxis("Mouse Y");
-            continuousActions[2] = Input.GetButton("Fire1") ? 1 : 0;
+            //continuousActions[2] = Input.GetButton("Fire1") ? 1 : 0;
+            var discreteActions = actionsOut.DiscreteActions;
+            discreteActions[0] = Input.GetButton("Fire1") ? 1 : 0;
         }
 
         public override void OnActionReceived(ActionBuffers actions) {
             var continuousActions = actions.ContinuousActions;
-            //Debug.Log(continuousActions[0] + " | " + continuousActions[1] + " | " + continuousActions[2]);
+            var discreteActions = actions.DiscreteActions;
+            //Debug.Log("continuousActions: " + continuousActions[0] + " | " + continuousActions[1]);
+            //Debug.Log("discreteActions: " + discreteActions[0]);
             float x = continuousActions[0] * mouseSensitivity;
             float y = continuousActions[1] * mouseSensitivity;
             //Debug.Log("X: " + x + " | Y:" + y);
@@ -49,13 +61,21 @@ namespace AimBot.Scrips {
             transform.localRotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
             CalculateDecisionReward();
 
-            if (continuousActions[2] > 0.5) {
+            if (discreteActions[0] == 1) {
                 if (_pistol.Fire()) {
                     AddReward(50f);
                     EndEpisode();
                 }
                 else AddReward(-5f);
             }
+
+            /*if (continuousActions[2] > 0.5) {
+                if (_pistol.Fire()) {
+                    AddReward(50f);
+                    EndEpisode();
+                }
+                else AddReward(-5f);
+            }*/
         }
 
         private void CalculateDecisionReward() {
@@ -68,6 +88,8 @@ namespace AimBot.Scrips {
                 //Debug.Log("Getting Away");
                 AddReward(-0.1f);
             }
+
+            AddReward(-0.01f); // per step, ensure to be fast
 
             _lastAngle = newAngle;
         }
