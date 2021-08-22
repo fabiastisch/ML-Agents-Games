@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -32,5 +31,9 @@ public class Utils {
             }
         }
         return list;
+    }
+
+    public static Quaternion getRotationToLookAt(GameObject g1, GameObject target) {
+        return Quaternion.LookRotation(target.transform.position - g1.transform.position);
     }
 }
