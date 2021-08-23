@@ -13,10 +13,10 @@ namespace AimBot.Scrips {
         // Update is called once per frame
         void Update() {
             int episode = agent.CompletedEpisodes;
-            int availablesteps = agent.AvailableSteps;
+            int availableSteps = agent.MaxStep - agent.StepCount;
             float reward = agent.GetCumulativeReward();
-            text.text = "Episode: " + episode + "\nAvailable Steps: " + availablesteps
-                + "\nReward: " + reward;
+            text.text = "Episode: " + episode + "\nAvailable Steps: " + availableSteps
+                        + "\nReward: " + reward;
         }
     }
 }

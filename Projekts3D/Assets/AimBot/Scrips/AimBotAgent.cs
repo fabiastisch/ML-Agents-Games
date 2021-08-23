@@ -12,9 +12,7 @@ namespace AimBot.Scrips {
         private Pistol _pistol;
         private float _lastAngle;
         private Quaternion _optimalRotation;
-
-        public int AvailableSteps => MaxStep - StepCount;
-
+        
         public override void Initialize() {
             _xRotation = 0;
             _yRotation = 0;
