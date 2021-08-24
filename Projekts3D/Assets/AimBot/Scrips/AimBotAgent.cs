@@ -1,3 +1,4 @@
+using System;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -80,6 +81,8 @@ namespace AimBot.Scrips {
 
         private void CalculateDecisionReward() {
             float newAngle = Quaternion.Angle(transform.rotation, _optimalRotation);
+            newAngle = Mathf.Abs(newAngle);
+            //Debug.Log(newAngle);
             if (newAngle < _lastAngle) {
                 //Debug.Log("Getting Closer");
                 AddReward(0.1f);
@@ -113,7 +116,7 @@ namespace AimBot.Scrips {
         private void HardReset() {
             transform.localRotation = Quaternion.identity;
             _optimalRotation = Utils.getRotationToLookAt(gameObject, target.gameObject);
-            _lastAngle = Quaternion.Angle(transform.rotation, _optimalRotation);
+            _lastAngle = Mathf.Abs(Quaternion.Angle(transform.rotation, _optimalRotation));
         }
 
         private void OnDrawGizmos() {
