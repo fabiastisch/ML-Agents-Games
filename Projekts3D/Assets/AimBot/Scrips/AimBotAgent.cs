@@ -85,7 +85,7 @@ namespace AimBot.Scrips {
             //Debug.Log(newAngle);
             if (newAngle < _lastAngle) {
                 //Debug.Log("Getting Closer");
-                AddReward(0.1f);
+                //AddReward(0.1f);
             }
             else {
                 //Debug.Log("Getting Away");
