@@ -12,7 +12,7 @@ namespace AimBot.Scrips {
         private Pistol _pistol;
         private float _lastAngle;
         private Quaternion _optimalRotation;
-        
+
         public override void Initialize() {
             _xRotation = 0;
             _yRotation = 0;
@@ -28,10 +28,12 @@ namespace AimBot.Scrips {
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask) {
             float angle = Quaternion.Angle(transform.rotation, _optimalRotation);
-            if (Mathf.Abs(angle) > 1f) {
+            if (Mathf.Abs(angle) > 1e-1f) {
                 actionMask.SetActionEnabled(0, 1, false);
             }
-            else Debug.Log("WriteDiscreteActionMask: " + angle);
+            else {
+                //Debug.Log("WriteDiscreteActionMask: " + angle);
+            }
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
