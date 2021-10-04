@@ -28,13 +28,23 @@ namespace AimBot.Scrips {
         }
 
         public override void WriteDiscreteActionMask(IDiscreteActionMask actionMask) {
-            float angle = Quaternion.Angle(transform.rotation, _optimalRotation);
+            // Collide to everything on layer 7
+            int layermask = 1 << 7;
+            // maxDist ~ 23 
+            if (Physics.Raycast(transform.position, transform.forward, 25, layermask)) {
+               // Debug.Log("Target is attackable, angle: " + Quaternion.Angle(transform.rotation, _optimalRotation));
+            }
+            else {
+               // Debug.Log("Not Attackable");
+                actionMask.SetActionEnabled(0, 1, false);
+            }
+            /*float angle = Quaternion.Angle(transform.rotation, _optimalRotation);
             if (Mathf.Abs(angle) > 1e-1f) {
                 actionMask.SetActionEnabled(0, 1, false);
             }
             else {
                 //Debug.Log("WriteDiscreteActionMask: " + angle);
-            }
+            }*/
         }
 
         public override void Heuristic(in ActionBuffers actionsOut) {
@@ -56,8 +66,8 @@ namespace AimBot.Scrips {
             //Debug.Log("X: " + x + " | Y:" + y);
             _xRotation -= y;
             _yRotation += x;
-            _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
-            _yRotation = Mathf.Clamp(_yRotation, -180f, 180f);
+            _xRotation = _xRotation % 360;
+            _yRotation = _yRotation % 360;
             //Debug.Log("X: " + _xRotation + " | Y:" + _yRotation);
             transform.localRotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
             CalculateDecisionReward();
@@ -99,7 +109,9 @@ namespace AimBot.Scrips {
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.F)) {
-                transform.rotation = _optimalRotation;
+                transform.localRotation = _optimalRotation;
+                _xRotation = transform.localRotation.eulerAngles.x;
+                _yRotation = transform.localRotation.eulerAngles.y;
             }
 
             if (Input.GetKeyDown(KeyCode.R)) {
@@ -108,7 +120,7 @@ namespace AimBot.Scrips {
         }
 
         public override void OnEpisodeBegin() {
-            Debug.Log(this.GetCumulativeReward());
+            //Debug.Log(this.GetCumulativeReward());
             target.ChangePosition();
             HardReset();
         }
